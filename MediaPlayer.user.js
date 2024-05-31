@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Media Player
-// @version      1.0
+// @version      1.1
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
@@ -24,7 +24,6 @@
     plyrScript.onload = initialize; // Call initialize function after Plyr is loaded
     document.head.appendChild(plyrScript);
 
-
     // Function to initialize the script after Plyr is loaded
     function initialize() {
         // Function to create the modal
@@ -46,14 +45,14 @@
                     </div>
                 </div>
             `;
-            $('body').append(modalHTML);
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
 
         // Function to handle the modal actions
         function handleModalActions(url) {
-            $('#downloadButton').off('click').on('click', function() {
+            document.getElementById('downloadButton').addEventListener('click', function() {
                 window.location.href = url;
-                $('#mediaModal').modal('hide');
+                document.getElementById('mediaModal').classList.remove('show');
             });
         }
 
@@ -64,22 +63,25 @@
         const player = new Plyr('#player');
 
         // Add event listener for MP4 and MP3 links with additional query parameters
-        $(document).on('click', 'a[href]', function(event) {
-            const url = $(this).attr('href');
-            if (url.match(/\.(mp4|mp3)(\?.*)?$/)) {
-                event.preventDefault();
-                const isVideo = url.match(/\.mp4(\?.*)?$/);
-                player.source = {
-                    type: isVideo ? 'video' : 'audio',
-                    sources: [
-                        {
-                            src: url,
-                            type: isVideo ? 'video/mp4' : 'audio/mp3'
-                        }
-                    ]
-                };
-                $('#mediaModal').modal('show');
-                handleModalActions(url);
+        document.addEventListener('click', function(event) {
+            const target = event.target;
+            if (target.tagName === 'A' && target.getAttribute('href')) {
+                const url = target.getAttribute('href');
+                if (url.match(/\.(mp4|mp3)(\?.*)?$/)) {
+                    event.preventDefault();
+                    const isVideo = url.match(/\.mp4(\?.*)?$/);
+                    player.source = {
+                        type: isVideo ? 'video' : 'audio',
+                        sources: [
+                            {
+                                src: url,
+                                type: isVideo ? 'video/mp4' : 'audio/mp3'
+                            }
+                        ]
+                    };
+                    document.getElementById('mediaModal').classList.add('show');
+                    handleModalActions(url);
+                }
             }
         });
     }
