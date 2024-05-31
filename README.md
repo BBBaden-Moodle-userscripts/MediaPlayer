@@ -1,3 +1,5 @@
+[![Static Badge](https://img.shields.io/badge/Install-Script-dark_green?style=for-the-badge&color=dark_green)](https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/raw/main/MediaPlayer.user.js)
+
 # Media Player Userscript
 
 ## Description
