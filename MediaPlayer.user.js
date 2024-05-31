@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Media Player
-// @version      2.0
+// @version      1.5
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
@@ -42,6 +42,15 @@
                         display: none; /* Initially hidden */
                         justify-content: center;
                         align-items: center;
+                        animation: fadeIn 0.3s ease; /* Fade-in animation */
+                    }
+                    @keyframes fadeIn {
+                        from {
+                            opacity: 0;
+                        }
+                        to {
+                            opacity: 1;
+                        }
                     }
                 </style>
                 <div class="modal-open" id="mediaModal" role="dialog" aria-labelledby="mediaModalLabel">
@@ -92,7 +101,10 @@
         function closeModal() {
             const modal = document.getElementById('mediaModal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.style.opacity = '0'; // Fade-out animation
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                }, 300); // Wait for the fade-out animation to finish before hiding
             }
         }
 
@@ -127,7 +139,11 @@
                         ]
                     };
                     handleModalActions(url);
-                    document.getElementById('mediaModal').style.display = 'flex'; // Show the modal
+                    const modal = document.getElementById('mediaModal');
+                    modal.style.display = 'flex'; // Show the modal
+                    setTimeout(function() {
+                        modal.style.opacity = '1'; // Fade-in animation
+                    }, 80); // Delay the fade-in animation for smoother transition
                 }
             }
         });
