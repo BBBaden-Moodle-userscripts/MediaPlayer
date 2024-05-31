@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Media Player
-// @version      1.5
+// @version      2.5
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
