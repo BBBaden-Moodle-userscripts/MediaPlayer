@@ -5,6 +5,7 @@
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
 // @grant        none
+// @icon         https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/blob/main/icon/playerIcon.png?raw=true
 // @require      https://cdn.plyr.io/3.7.8/plyr.polyfilled.js
 // ==/UserScript==
 
