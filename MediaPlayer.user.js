@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Media Player
-// @version      1.1
+// @version      2.0
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
@@ -29,11 +29,29 @@
         // Function to create the modal
         function createModal() {
             const modalHTML = `
-                <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                <style>
+                    /* CSS to make the background black with 50% opacity */
+                    .modal-open {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
+                        z-index: 9999;
+                        display: none; /* Initially hidden */
+                        justify-content: center;
+                        align-items: center;
+                    }
+                </style>
+                <div class="modal-open" id="mediaModal" role="dialog" aria-labelledby="mediaModalLabel">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="mediaModalLabel">Media Player</h5>
+                                <button type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body">
                                 <div id="mediaContainer" style="border-radius: 10px; overflow: hidden;">
@@ -46,15 +64,44 @@
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Attach event listener to the close button
+            const closeButton = document.querySelector('.modal-open .close');
+            if (closeButton) {
+                closeButton.addEventListener('click', closeModal);
+            }
+
+            // Close the modal when clicking outside of it
+            const modal = document.getElementById('mediaModal');
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
         }
 
         // Function to handle the modal actions
         function handleModalActions(url) {
             document.getElementById('downloadButton').addEventListener('click', function() {
                 window.location.href = url;
-                document.getElementById('mediaModal').classList.remove('show');
+                closeModal();
             });
         }
+
+        // Function to close the modal
+        function closeModal() {
+            const modal = document.getElementById('mediaModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Close the modal when pressing the Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
 
         // Create the modal when the script loads
         createModal();
@@ -79,8 +126,8 @@
                             }
                         ]
                     };
-                    document.getElementById('mediaModal').classList.add('show');
                     handleModalActions(url);
+                    document.getElementById('mediaModal').style.display = 'flex'; // Show the modal
                 }
             }
         });
