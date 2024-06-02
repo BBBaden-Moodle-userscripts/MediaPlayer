@@ -7,6 +7,8 @@
 // @grant        none
 // @icon         https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/blob/main/icon/playerIcon.png?raw=true
 // @require      https://cdn.plyr.io/3.7.8/plyr.polyfilled.js
+// @downloadURL  https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/raw/main/MediaPlayer.user.js
+// @updateURL    https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/raw/main/MediaPlayer.user.js
 // ==/UserScript==
 
 (function() {
