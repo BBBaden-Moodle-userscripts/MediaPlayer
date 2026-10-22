@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Media Player
-// @version      2.6
+// @version      2.7
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
 // @match        https://lms.bbbaden.ch/*
-// @grant        none
+// @grant        GM_info
 // @require      https://github.com/BBBaden-Moodle-userscripts/LoggingLibrary/raw/refs/heads/main/Logging.lib.user.js
 // @require      https://github.com/BBBaden-Moodle-userscripts/UserscriptBridgeLib/raw/main/userscriptBridge.lib.js
 // @icon         https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/blob/main/icon/playerIcon.png?raw=true
