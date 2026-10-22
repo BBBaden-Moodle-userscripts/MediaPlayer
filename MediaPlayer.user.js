@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name         Media Player
-// @version      2.5
+// @version      2.6
 // @description  Handle MP4 and MP3 links to download or play using Plyr
 // @author       PianoNic
 // @match        https://moodle.bbbaden.ch/*
+// @match        https://lms.bbbaden.ch/*
 // @grant        none
+// @require      https://github.com/BBBaden-Moodle-userscripts/LoggingLibrary/raw/refs/heads/main/Logging.lib.user.js
+// @require      https://github.com/BBBaden-Moodle-userscripts/UserscriptBridgeLib/raw/main/userscriptBridge.lib.js
 // @icon         https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/blob/main/icon/playerIcon.png?raw=true
 // @require      https://cdn.plyr.io/3.7.8/plyr.polyfilled.js
 // @downloadURL  https://github.com/BBBaden-Moodle-userscripts/MediaPlayer/raw/main/MediaPlayer.user.js
@@ -14,19 +17,16 @@
 (function() {
     'use strict';
 
-    // Add Plyr CSS
+    if (UserscriptBridge.registerScript() || !UserscriptBridge.runOnce()) return;
+
+    // Plyr JS is loaded via @require, only the CSS has to be added
     const plyrCss = document.createElement('link');
     plyrCss.rel = 'stylesheet';
     plyrCss.href = 'https://cdn.plyr.io/3.7.8/plyr.css';
     document.head.appendChild(plyrCss);
 
-    // Add Plyr JS
-    const plyrScript = document.createElement('script');
-    plyrScript.src = 'https://cdn.plyr.io/3.7.8/plyr.polyfilled.js';
-    plyrScript.onload = initialize; // Call initialize function after Plyr is loaded
-    document.head.appendChild(plyrScript);
+    initialize();
 
-    // Function to initialize the script after Plyr is loaded
     function initialize() {
         // Function to create the modal
         function createModal() {
@@ -93,10 +93,10 @@
 
         // Function to handle the modal actions
         function handleModalActions(url) {
-            document.getElementById('downloadButton').addEventListener('click', function() {
+            document.getElementById('downloadButton').onclick = function() {
                 window.location.href = url;
                 closeModal();
-            });
+            };
         }
 
         // Function to close the modal
@@ -125,8 +125,8 @@
 
         // Add event listener for MP4 and MP3 links with additional query parameters
         document.addEventListener('click', function(event) {
-            const target = event.target;
-            if (target.tagName === 'A' && target.getAttribute('href')) {
+            const target = event.target.closest('a[href]');
+            if (target) {
                 const url = target.getAttribute('href');
                 if (url.match(/\.(mp4|mp3)(\?.*)?$/)) {
                     event.preventDefault();
